@@ -1,0 +1,16 @@
+# This file contains all of the UUIDs for each Avatar on the access list.
+# Every avatar on this list needs to have an IDC attached (HUD or Body-Part) in order for this system to work
+# the stargate will not drop shields unless the avatar as been verified.
+
+# An IDC for the traveler is included as part of the Console package. 
+# If you havent received one please contact AdmiralMorketh Sorex.
+
+# Also any line with a # will be ignored by the options parser as such you can use # (comments)
+# to keep track of names/keys
+
+
+# AdmiralMorketh Sorex
+IDC=81c65d80-2e5c-42e2-b6f2-0e541368ca1a
+
+# Traveler Info
+#IDC=

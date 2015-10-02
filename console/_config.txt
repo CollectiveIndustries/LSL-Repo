@@ -1,0 +1,20 @@
+##options for the Console##
+##all lines with a # are ignored
+##listen channel for the comm
+_LISTEN_CHAN=0
+#use BorgDash comm HUD?
+_BORG_COMM=0
+#if not useing BORG_COMM select channel to output comm text to
+OUTPUT_CHAN=0
+#internal sound unit set to 0 to use EXTERNAL sound server script
+_SOUND_INTERNAL=1
+#ALERT SYSTEM SOUNDS & LIGHTS
+ALERTS=1
+ALERT_SOUNDS=1
+#AUTO shielding activator and IDC system
+AUTO_SHEILD=1
+#AUTO COMM will listen on _LISTEN_CHAN for chat if turned when gate is open or you have to push the COMM every time you #want to chat
+AUTO_COMM=1
+#WARNING ONLY UNCOMMENT THE FOLLOWING LINE IF YOU REALLY WANT THE GATE TO EXPLODE WHEN TRIGGERED FROM
+#REMOTE SIDE YOU MUST HAVE BOTH SCRIPTS WITH THE SAME NANITE KEY OR IT WILL FAIL
+#NANITE=

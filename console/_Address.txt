@@ -1,0 +1,7 @@
+# Address listing each address will need to be saved in this notecard in order to keep your destinations
+# Each line should be the SGC ID of the gate the rest of the information will be obtained during start up
+
+#SGC-ID
+MD8-64A
+CKD CI
+UFGQ
