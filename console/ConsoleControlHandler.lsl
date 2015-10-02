@@ -34,6 +34,18 @@ integer NANITE_BREACH;
 
 //
 
+StatusOutput(string info)
+{
+	//dial lookup|successful|13,1,16,14,33,12|1|Glockler|<84.306831,64.009476,67.186531>|pegasus|What-If|NULL
+	string Status = llList2String(llParseString2List(info,["|"],[]),1);
+	string region = llList2String(llParseString2List(info,["|"],[]),4);
+	string gateType = llList2String(llParseString2List(info,["|"],[]),6);
+	string name = llList2String(llParseString2List(info,["|"],[]),7);
+	if (Status == "successful")
+	{
+		llSay(0,"StarGate Probe\nGate Type: "+gateType+"\nRegion: "+region+"\nGate Name:"+name);
+	}
+}
 
 _CISoundServ(integer chan, string UUID, integer internal)
 {
@@ -581,6 +593,9 @@ state running
             buffer += (buffer = "") + buffer + /*(string)*/llKey2Name(CHATTER_MSG) +"\n";
             llSetText(buffer,<1,1,1>,1.0);
         }
+		if(C_STRING == "dial lookup") //well Command String for Dial Lookups are working still
+			//llOwnerSay("DIAL LOOKUP:" + msg);
+			StatusOutput(msg);
     }
 }
 //end_unprocessed_text
