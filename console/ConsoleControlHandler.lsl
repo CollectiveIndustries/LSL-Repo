@@ -36,15 +36,15 @@ integer NANITE_BREACH;
 
 StatusOutput(string info)
 {
-	//dial lookup|successful|13,1,16,14,33,12|1|Glockler|<84.306831,64.009476,67.186531>|pegasus|What-If|NULL
-	string Status = llList2String(llParseString2List(info,["|"],[]),1);
-	string region = llList2String(llParseString2List(info,["|"],[]),4);
-	string gateType = llList2String(llParseString2List(info,["|"],[]),6);
-	string name = llList2String(llParseString2List(info,["|"],[]),7);
-	if (Status == "successful")
-	{
-		llSay(0,"StarGate Probe\nGate Type: "+gateType+"\nRegion: "+region+"\nGate Name:"+name);
-	}
+    //dial lookup|successful|13,1,16,14,33,12|1|Glockler|<84.306831,64.009476,67.186531>|pegasus|What-If|NULL
+    string Status = llList2String(llParseString2List(info,["|"],[]),1);
+    string region = llList2String(llParseString2List(info,["|"],[]),4);
+    string gateType = llList2String(llParseString2List(info,["|"],[]),6);
+    string name = llList2String(llParseString2List(info,["|"],[]),7);
+    if (Status == "successful")
+    {
+        llSay(0,"StarGate Probe\nGate Type: "+gateType+"\nRegion: "+region+"\nGate Name:"+name);
+    }
 }
 
 _CISoundServ(integer chan, string UUID, integer internal)
@@ -135,12 +135,14 @@ _CITouchLoc(vector touched, key KEY)
         if (POWER == TRUE && llGetOwner() == KEY)//ONLY owner can turn us offline
         {
             POWER = FALSE;
+            llSay(API_CHAN,"cut wormhole");
+            llSleep(1);
             llSay(API_CHAN,"offline stargate");
             llSay(OUTPUT_CHAN, "Power disengaged");
             //128e4db6-99ae-4111-f149-f080eec1c1c1
             _CISoundServ(SOUND_API, "128e4db6-99ae-4111-f149-f080eec1c1c1" ,_SOUND_INTERNAL);
             llSetPrimitiveParams([PRIM_TEXTURE, 3, "7b9070c8-dc65-7358-01ae-8082f976d1b4",<1.0,1.0,0.0>, ZERO_VECTOR, 0.0]);
-
+            state offline;
         }
     }
 
@@ -593,9 +595,30 @@ state running
             buffer += (buffer = "") + buffer + /*(string)*/llKey2Name(CHATTER_MSG) +"\n";
             llSetText(buffer,<1,1,1>,1.0);
         }
-		if(C_STRING == "dial lookup") //well Command String for Dial Lookups are working still
-			//llOwnerSay("DIAL LOOKUP:" + msg);
-			StatusOutput(msg);
+        if(C_STRING == "dial lookup") //well Command String for Dial Lookups are working still
+            //llOwnerSay("DIAL LOOKUP:" + msg);
+            StatusOutput(msg);
+    }
+}
+
+state offline
+{
+    state_entry()
+    {
+        llSay(0,"Power OFFLINE. Standing By.");
+    }
+    touch_start(integer num_detected)
+    {
+        integer link = llDetectedLinkNumber(0);
+        integer face = llDetectedTouchFace(0);
+        
+        if(link == 1 && face == 3) //Link 1 for ROOT PRIM face 3 for Console face
+        {
+            llSay(0,"Transfering Power.");
+            llSay(API_CHAN,"online stargate");
+            POWER = TRUE;
+            state default;
+        }
     }
 }
 //end_unprocessed_text
