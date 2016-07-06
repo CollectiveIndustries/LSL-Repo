@@ -4,7 +4,7 @@
 string namePrefix = "";
 
 // Owner UUID list from notcard
-list _Unames = [];// list of IDC hashs from the NoteCard
+list _Unames = [];// list of owner's User names from the NoteCard
 
 //Note Card Reader
 key dataRequestID;
@@ -32,7 +32,7 @@ integer _CICompare(string s1, string s2)
     return TRUE;
 }
 
-// String snippets from SL Wiki
+// String snippets from SL Wiki for use with common strings
 integer contains(string haystack, string needle) // http://wiki.secondlife.com/wiki/llSubStringIndex
 {
     return 0 <= llSubStringIndex(haystack, needle);
@@ -71,7 +71,7 @@ integer _CIuuid2chan(key id)
     return hex2int + mainkey;
 }
 
-// this script will controle the IDC part of the gate
+//Section grabs values from the notecard and then sets them all up in script memmory
 default
 {
     changed(integer change)
@@ -103,7 +103,7 @@ default
                     ++lineCounter;                
                     dataRequestID = llGetNotecardLine(notecardName, lineCounter);    
                 }
-                else //its # or "" so we just go to next line
+                else //its # or "" so we just go to the next line
                 {
                     ++lineCounter;
                     dataRequestID = llGetNotecardLine(notecardName, lineCounter);
@@ -129,21 +129,27 @@ state running
     state_entry()
     {
         llSay(PUBLIC_CHANNEL, llDumpList2String(_Unames, "\n"));
-		llListen(PUBLIC_CHANNEL, "", NULL_KEY, "");
+        llListen(PUBLIC_CHANNEL, "", NULL_KEY, "");
     }
-	
-	listen(integer channel, string name, key id, string message)
-	{
-		if(message == (namePrefix+"corset"))
-			llSay(0,"Message: "+message+"  "+name);
-			if(llListFindList(_Unames, [llToLower(strReplace(name, ".", " "))])) //name from listen is found in the _Unames list AFTER " " has been replaced with "."
-			{
-				llSay(0,"Hello "+name);
-			}
-			else
-			{
-				//Avatar is NOT in the OwnersList
-			}
-			
-	}
+    
+    listen(integer channel, string name, key id, string message)
+    {
+        if(message == (namePrefix+"corset"))
+        {
+            //check and see if the AV name is in the list of owners
+            if(llListFindList(_Unames, [llToLower(strReplace(name, " ", "."))]) != -1) //name from listen is found in the _Unames list AFTER " " has been replaced with "."
+            {
+                // A menu should go here to interact with the "Owner"
+                llSay(PUBLIC_CHANNEL, "Hello "+name);
+                
+            }
+            else
+            {
+                // A PM can be sent from here in order to tell a user off or we can just leave this empty 
+                // as a third option NC Configurable inorder to set message and IM true/false
+                llSay(PUBLIC_CHANNEL, name+" you are not an Owner");
+                //Avatar is NOT in the OwnersList
+            }
+        }
+    }
 }
