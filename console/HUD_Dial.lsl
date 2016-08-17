@@ -100,7 +100,6 @@ state running
     }
     changed(integer change)
     {
-        init();
         llResetScript();
     }
     touch_start(integer num)
